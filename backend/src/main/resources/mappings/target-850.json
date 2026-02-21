@@ -1,0 +1,151 @@
+{
+  "retailerId": "TARGET",
+  "transactionSetCode": "850",
+  "description": "Target Corporation Purchase Order (850) — Standard Domestic",
+  "version": "1.2.0",
+  "elementDelimiter": "*",
+  "headerMappings": [
+    {
+      "segmentId": "BEG",
+      "elementPosition": 3,
+      "targetField": "poNumber",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false,
+      "_comment": "BEG03 — Purchase Order Number"
+    },
+    {
+      "segmentId": "BEG",
+      "elementPosition": 2,
+      "targetField": "purchaseOrderType",
+      "required": true,
+      "defaultValue": "SA",
+      "qualifier": null,
+      "lineLevel": false,
+      "_comment": "BEG02 — Purchase Order Type Code (SA=Stand-Alone, OS=Drop-Ship)"
+    },
+    {
+      "segmentId": "BEG",
+      "elementPosition": 5,
+      "targetField": "poDate",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false,
+      "_comment": "BEG05 — Purchase Order Date in YYYYMMDD format"
+    },
+    {
+      "segmentId": "DTM",
+      "elementPosition": 2,
+      "targetField": "requestedDeliveryDate",
+      "required": false,
+      "defaultValue": null,
+      "qualifier": "01:002",
+      "lineLevel": false,
+      "_comment": "DTM02 where DTM01=002 — Delivery Requested date"
+    },
+    {
+      "segmentId": "N1",
+      "elementPosition": 2,
+      "targetField": "shipToName",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": "01:ST",
+      "lineLevel": false,
+      "_comment": "N102 where N101=ST (Ship-To) — Store or DC name"
+    },
+    {
+      "segmentId": "N3",
+      "elementPosition": 1,
+      "targetField": "shipToAddress",
+      "required": false,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false,
+      "_comment": "N301 — Street address line 1"
+    },
+    {
+      "segmentId": "N4",
+      "elementPosition": 1,
+      "targetField": "shipToCity",
+      "required": false,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false,
+      "_comment": "N401 — City"
+    },
+    {
+      "segmentId": "N4",
+      "elementPosition": 2,
+      "targetField": "shipToState",
+      "required": false,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false,
+      "_comment": "N402 — State code (2-letter)"
+    },
+    {
+      "segmentId": "N4",
+      "elementPosition": 3,
+      "targetField": "shipToZip",
+      "required": false,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false,
+      "_comment": "N403 — ZIP/Postal code"
+    },
+    {
+      "segmentId": "REF",
+      "elementPosition": 2,
+      "targetField": "departmentNumber",
+      "required": false,
+      "defaultValue": null,
+      "qualifier": "01:DP",
+      "lineLevel": false,
+      "_comment": "REF02 where REF01=DP — Target Department Number"
+    }
+  ],
+  "lineMappings": [
+    {
+      "segmentId": "PO1",
+      "elementPosition": 2,
+      "targetField": "quantityOrdered",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": true,
+      "_comment": "PO102 — Ordered Quantity"
+    },
+    {
+      "segmentId": "PO1",
+      "elementPosition": 3,
+      "targetField": "unitOfMeasure",
+      "required": true,
+      "defaultValue": "EA",
+      "qualifier": null,
+      "lineLevel": true,
+      "_comment": "PO103 — Unit of Measure (EA=Each, CA=Case)"
+    },
+    {
+      "segmentId": "PO1",
+      "elementPosition": 4,
+      "targetField": "unitPrice",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": true,
+      "_comment": "PO104 — Unit Price"
+    },
+    {
+      "segmentId": "PO1",
+      "elementPosition": 7,
+      "targetField": "sku",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": true,
+      "_comment": "PO107 — Vendor's Product/Service ID (SKU/GTIN). Target uses position 7 with qualifier UI (UPC)."
+    }
+  ]
+}

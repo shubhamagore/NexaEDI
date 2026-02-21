@@ -1,0 +1,124 @@
+{
+  "retailerId": "WALMART",
+  "transactionSetCode": "850",
+  "description": "Walmart Inc. Purchase Order (850) — Standard Domestic Replenishment",
+  "version": "1.0.0",
+  "elementDelimiter": "*",
+  "headerMappings": [
+    {
+      "segmentId": "BEG",
+      "elementPosition": 3,
+      "targetField": "poNumber",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false,
+      "_comment": "BEG03 — Walmart PO Number (10-digit)"
+    },
+    {
+      "segmentId": "BEG",
+      "elementPosition": 2,
+      "targetField": "purchaseOrderType",
+      "required": true,
+      "defaultValue": "SA",
+      "qualifier": null,
+      "lineLevel": false
+    },
+    {
+      "segmentId": "BEG",
+      "elementPosition": 5,
+      "targetField": "poDate",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false,
+      "_comment": "BEG05 — PO Issue Date in YYYYMMDD"
+    },
+    {
+      "segmentId": "N1",
+      "elementPosition": 2,
+      "targetField": "shipToName",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": "01:ST",
+      "lineLevel": false,
+      "_comment": "N102 where N101=ST — Walmart DC or Store Name"
+    },
+    {
+      "segmentId": "N3",
+      "elementPosition": 1,
+      "targetField": "shipToAddress",
+      "required": false,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false
+    },
+    {
+      "segmentId": "N4",
+      "elementPosition": 1,
+      "targetField": "shipToCity",
+      "required": false,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false
+    },
+    {
+      "segmentId": "N4",
+      "elementPosition": 2,
+      "targetField": "shipToState",
+      "required": false,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false
+    },
+    {
+      "segmentId": "N4",
+      "elementPosition": 3,
+      "targetField": "shipToZip",
+      "required": false,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": false
+    }
+  ],
+  "lineMappings": [
+    {
+      "segmentId": "PO1",
+      "elementPosition": 2,
+      "targetField": "quantityOrdered",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": true,
+      "_comment": "PO102 — Ordered Quantity"
+    },
+    {
+      "segmentId": "PO1",
+      "elementPosition": 3,
+      "targetField": "unitOfMeasure",
+      "required": true,
+      "defaultValue": "EA",
+      "qualifier": null,
+      "lineLevel": true
+    },
+    {
+      "segmentId": "PO1",
+      "elementPosition": 4,
+      "targetField": "unitPrice",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": true
+    },
+    {
+      "segmentId": "PO1",
+      "elementPosition": 7,
+      "targetField": "sku",
+      "required": true,
+      "defaultValue": null,
+      "qualifier": null,
+      "lineLevel": true,
+      "_comment": "PO107 — Walmart uses GTIN-14 at this position"
+    }
+  ]
+}
