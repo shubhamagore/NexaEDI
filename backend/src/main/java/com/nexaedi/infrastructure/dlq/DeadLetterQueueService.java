@@ -1,72 +1,39 @@
 package com.nexaedi.infrastructure.dlq;
 
+import com.nexaedi.infrastructure.persistence.DeadLetterEntry;
+import com.nexaedi.infrastructure.persistence.DeadLetterRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
-/**
- * Manages the Dead Letter Queue (DLQ) for EDI files that fail processing.
- *
- * On failure, this service:
- *  1. Copies the original EDI file to the DLQ directory, preserving the file name.
- *  2. Creates a companion .error file with a timestamped failure report including
- *     the exact segment, line number, and full exception message.
- *
- * The DLQ directory is monitored for operational alerting. Files can be corrected
- * and resubmitted through the ingestion API for replay.
- */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class DeadLetterQueueService {
 
-    private static final DateTimeFormatter TIMESTAMP_FORMAT =
-            DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").withZone(ZoneOffset.UTC);
+    private final DeadLetterRepository deadLetterRepository;
 
-    @Value("${nexaedi.dlq.directory:dlq}")
-    private String dlqDirectory;
-
-    /**
-     * Moves a failed EDI file to the DLQ and writes a companion error report.
-     *
-     * @param correlationId  the unique ID for this processing run
-     * @param retailerId     the retailer that sent the file
-     * @param originalContent the raw EDI content that failed
-     * @param originalFileName the original filename for reference
-     * @param errorMessage   the human-readable error description
-     * @param cause          the exception that triggered the failure
-     * @return the Path to the error file for logging
-     */
-    public Path quarantine(String correlationId, String retailerId, String originalContent,
-                           String originalFileName, String errorMessage, Throwable cause) {
+    public DeadLetterEntry quarantine(String correlationId, String retailerId, String originalContent,
+                                      String originalFileName, String errorMessage, Throwable cause) {
         try {
-            Path dlqPath = Path.of(dlqDirectory, retailerId.toLowerCase());
-            Files.createDirectories(dlqPath);
-
-            String timestamp = TIMESTAMP_FORMAT.format(Instant.now());
-            String baseName = correlationId + "_" + timestamp;
-
-            Path ediFile = dlqPath.resolve(baseName + ".edi");
-            Files.writeString(ediFile, originalContent != null ? originalContent : "", StandardCharsets.UTF_8);
-
-            Path errorFile = dlqPath.resolve(baseName + ".error");
             String errorReport = buildErrorReport(correlationId, retailerId, originalFileName, errorMessage, cause);
-            Files.writeString(errorFile, errorReport, StandardCharsets.UTF_8);
-
-            log.warn("[DLQ] Quarantined failed EDI file. correlationId={} retailer={} errorFile={}",
-                    correlationId, retailerId, errorFile.toAbsolutePath());
-
-            return errorFile;
-        } catch (IOException e) {
-            log.error("[DLQ] CRITICAL: Failed to write to Dead Letter Queue for correlationId={}: {}",
+            DeadLetterEntry entry = DeadLetterEntry.builder()
+                    .id(UUID.randomUUID())
+                    .retailerId(retailerId != null ? retailerId.toLowerCase() : "")
+                    .correlationId(correlationId)
+                    .originalContent(originalContent != null ? originalContent : "")
+                    .errorReport(errorReport)
+                    .createdAt(Instant.now())
+                    .build();
+            entry = deadLetterRepository.save(entry);
+            log.warn("[DLQ] Quarantined failed EDI file. correlationId={} retailer={} id={}",
+                    correlationId, retailerId, entry.getId());
+            return entry;
+        } catch (Exception e) {
+            log.error("[DLQ] CRITICAL: Failed to persist Dead Letter Queue entry for correlationId={}: {}",
                     correlationId, e.getMessage(), e);
             return null;
         }

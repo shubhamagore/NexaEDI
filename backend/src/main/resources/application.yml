@@ -1,42 +1,18 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Shared config. Datasource and JPA are in profile-specific files:
+#   local — H2 in-memory, dev;  prod — PostgreSQL, deployment (Render).
+# ─────────────────────────────────────────────────────────────────────────────
+
 spring:
   application:
     name: nexaedi
-
-  # Default active profile for local development.
-  # Override in production with: java -jar nexaedi.jar --spring.profiles.active=prod
   profiles:
     active: local
-
-  # Virtual Threads (Project Loom) — enables structured concurrency for all Tomcat threads
   threads:
     virtual:
       enabled: true
-
-  datasource:
-    url: jdbc:postgresql://localhost:5432/nexaedi
-    username: ${DB_USERNAME:nexaedi}
-    password: ${DB_PASSWORD:nexaedi_secret}
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      pool-name: nexaedi-db-pool
-      maximum-pool-size: 20
-      minimum-idle: 5
-      connection-timeout: 30000
-
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-        default_schema: public
-    open-in-view: false
-
   jackson:
     time-zone: UTC
-
   servlet:
     multipart:
       enabled: true
@@ -51,7 +27,6 @@ server:
     enabled: true
     mime-types: application/json,application/xml,text/plain
 
-# Actuator for observability (expose all endpoints in dev; restrict in production)
 management:
   endpoints:
     web:
@@ -70,31 +45,17 @@ info:
     description: High-performance, open-source EDI Orchestration Platform
     version: 1.0.0-SNAPSHOT
 
-# ─────────────────────────────────────────────
-# NexaEDI custom configuration
-# ─────────────────────────────────────────────
 nexaedi:
   auth:
     jwt-secret: ${JWT_SECRET:nexaedi-super-secret-key-must-be-at-least-32-chars-2026!}
-    jwt-expiry-ms: 86400000   # 24 hours
-
-  # Directory to scan for retailer mapping JSON files.
-  # Drop new <retailer>-<txn>.json files here and restart.
+    jwt-expiry-ms: 86400000
   mappings:
     directory: ${NEXAEDI_MAPPINGS_DIR:src/main/resources/mappings}
-
-  # Dead Letter Queue — failed files and .error reports are written here
-  dlq:
-    directory: ${NEXAEDI_DLQ_DIR:dlq}
-
-  # AWS S3 for durable EDI file storage and replay
   s3:
     region: ${AWS_REGION:us-east-1}
     bucket-name: ${S3_BUCKET_NAME:nexaedi-edi-files-dev}
     inbound-prefix: edi/inbound/
     processed-prefix: edi/processed/
-
-  # Shopify 2026-01 Admin API (Client Credentials flow)
   shopify:
     store-name: ${SHOPIFY_STORE_NAME:your-store}
     client-id: ${SHOPIFY_CLIENT_ID:changeme}
