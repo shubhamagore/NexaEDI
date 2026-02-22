@@ -5,7 +5,7 @@ import com.nexaedi.core.model.X12Interchange;
 import com.nexaedi.core.model.X12Transaction;
 import com.nexaedi.core.parser.UniversalX12Parser;
 import com.nexaedi.core.processor.Target850Processor;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
