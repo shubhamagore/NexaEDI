@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 @ConditionalOnProperty(
         name = "nexaedi.s3.enabled",
         havingValue = "false",
@@ -14,30 +13,16 @@ import org.springframework.stereotype.Service;
 public class DatabaseStorageService implements StorageService {
 
     @Override
-    public String storeInbound(String correlationId,
-                               String retailerId,
-                               String content,
-                               String fileName) {
-
-        // For now, just return logical key
+    public String storeInbound(String correlationId, String retailerId, String content) {
         return "db://" + correlationId;
     }
 
     @Override
-    public void archiveProcessed(String key) {
-        // no-op for now
-    }
-
-    @Override
-    public String retrieveContent(String key) {
-        return null;
-    }
-
-    @Override
     public String storeOutbound(String correlationId, String retailerId, String content) {
-        return "db-outbound-" + correlationId;
+        return "db-outbound://" + correlationId;
     }
-     @Override
+
+    @Override
     public String retrieveContent(String key) {
         return "";
     }
