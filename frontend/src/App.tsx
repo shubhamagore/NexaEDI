@@ -70,19 +70,21 @@ function AppRoutes() {
         <RequireAuth><PortalLayout><div className="text-slate-400 p-8 text-sm">Settings coming soon</div></PortalLayout></RequireAuth>
       } />
 
-      {/* ── Developer / Ops UI (accessible without auth for local dev) ── */}
+      {/* ── Developer / Ops UI (requires auth; redirects to /login when not authenticated) ── */}
       <Route path="/*" element={
-        <Layout>
-          <Routes>
-            <Route path="/"                     element={<Dashboard />} />
-            <Route path="/ingest"               element={<Ingest />} />
-            <Route path="/audit"                element={<AuditTrail />} />
-            <Route path="/audit/:correlationId" element={<AuditDetail />} />
-            <Route path="/mappings"             element={<Mappings />} />
-            <Route path="/dev"                  element={<DevTools />} />
-            <Route path="*"                     element={<Navigate to="/" replace />} />
-          </Routes>
-        </Layout>
+        <RequireAuth>
+          <Layout>
+            <Routes>
+              <Route path="/"                     element={<Dashboard />} />
+              <Route path="/ingest"               element={<Ingest />} />
+              <Route path="/audit"                element={<AuditTrail />} />
+              <Route path="/audit/:correlationId" element={<AuditDetail />} />
+              <Route path="/mappings"             element={<Mappings />} />
+              <Route path="/dev"                  element={<DevTools />} />
+              <Route path="*"                     element={<Navigate to="/" replace />} />
+            </Routes>
+          </Layout>
+        </RequireAuth>
       } />
     </Routes>
   );
