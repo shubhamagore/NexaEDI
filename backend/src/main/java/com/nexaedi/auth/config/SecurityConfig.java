@@ -65,9 +65,12 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * CORS: localhost for dev; config for exact URLs; https://*.vercel.app for any Vercel deployment (preview or production).
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        List<String> origins = corsAllowedOriginsConfig == null || corsAllowedOriginsConfig.isBlank()
+        List<String> exactOrigins = corsAllowedOriginsConfig == null || corsAllowedOriginsConfig.isBlank()
                 ? DEFAULT_CORS_ORIGINS
                 : Stream.concat(
                         Arrays.stream(corsAllowedOriginsConfig.split(","))
@@ -75,8 +78,12 @@ public class SecurityConfig {
                                 .filter(s -> !s.isEmpty()),
                         DEFAULT_CORS_ORIGINS.stream()
                 ).distinct().toList();
+        List<String> originPatterns = Stream.concat(
+                exactOrigins.stream(),
+                Stream.of("https://*.vercel.app")
+        ).distinct().toList();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(origins);
+        config.setAllowedOriginPatterns(originPatterns);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
