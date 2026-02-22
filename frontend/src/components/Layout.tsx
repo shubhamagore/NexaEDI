@@ -4,18 +4,18 @@ import Sidebar from './Sidebar';
 import { fetchHealth } from '../api/client';
 
 const pageTitles: Record<string, { title: string; subtitle: string }> = {
-  '/':         { title: 'Dashboard',   subtitle: 'Pipeline health and recent activity' },
-  '/ingest':   { title: 'Ingest EDI',  subtitle: 'Submit raw X12 EDI files for processing' },
-  '/audit':    { title: 'Audit Trail', subtitle: 'Full lifecycle history for every processed file' },
-  '/mappings': { title: 'Mappings',    subtitle: 'Retailer-specific EDI translation profiles' },
-  '/dev':      { title: 'Dev Tools',   subtitle: 'Local development utilities and database inspector' },
+  '/dashboard':         { title: 'Dashboard',   subtitle: 'Pipeline health and recent activity' },
+  '/dashboard/ingest':   { title: 'Ingest EDI',  subtitle: 'Submit raw X12 EDI files for processing' },
+  '/dashboard/audit':    { title: 'Audit Trail', subtitle: 'Full lifecycle history for every processed file' },
+  '/dashboard/mappings': { title: 'Mappings',    subtitle: 'Retailer-specific EDI translation profiles' },
+  '/dashboard/dev':      { title: 'Dev Tools',   subtitle: 'Local development utilities and database inspector' },
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const [apiOnline, setApiOnline] = useState(false);
 
-  const path = '/' + location.pathname.split('/')[1];
+  const path = location.pathname.startsWith('/dashboard') ? location.pathname : '/dashboard';
   const page = pageTitles[path] ?? { title: 'NexaEDI', subtitle: '' };
 
   useEffect(() => {

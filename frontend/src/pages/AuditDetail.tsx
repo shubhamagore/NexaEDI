@@ -88,7 +88,7 @@ export default function AuditDetail() {
   return (
     <div className="max-w-3xl space-y-6 animate-slide-in">
       {/* Back */}
-      <button onClick={() => navigate('/audit')} className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-800 transition-colors">
+      <button onClick={() => navigate('/dashboard/audit')} className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-800 transition-colors">
         <ArrowLeft className="w-4 h-4" /> Back to Audit Trail
       </button>
 

@@ -9,7 +9,8 @@ import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import OnboardingPage from './pages/auth/OnboardingPage';
 
-// Dev / Ops pages
+// Landing & Dev / Ops pages
+import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import Ingest from './pages/Ingest';
 import AuditTrail from './pages/AuditTrail';
@@ -70,18 +71,21 @@ function AppRoutes() {
         <RequireAuth><PortalLayout><div className="text-slate-400 p-8 text-sm">Settings coming soon</div></PortalLayout></RequireAuth>
       } />
 
-      {/* ── Developer / Ops UI (requires auth; redirects to /login when not authenticated) ── */}
-      <Route path="/*" element={
+      {/* ── Public landing ── */}
+      <Route path="/" element={<Landing />} />
+
+      {/* ── Developer / Ops UI (protected; redirects to /login when not authenticated) ── */}
+      <Route path="/dashboard/*" element={
         <RequireAuth>
           <Layout>
             <Routes>
-              <Route path="/"                     element={<Dashboard />} />
-              <Route path="/ingest"               element={<Ingest />} />
-              <Route path="/audit"                element={<AuditTrail />} />
-              <Route path="/audit/:correlationId" element={<AuditDetail />} />
-              <Route path="/mappings"             element={<Mappings />} />
-              <Route path="/dev"                  element={<DevTools />} />
-              <Route path="*"                     element={<Navigate to="/" replace />} />
+              <Route index element={<Dashboard />} />
+              <Route path="ingest" element={<Ingest />} />
+              <Route path="audit" element={<AuditTrail />} />
+              <Route path="audit/:correlationId" element={<AuditDetail />} />
+              <Route path="mappings" element={<Mappings />} />
+              <Route path="dev" element={<DevTools />} />
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
           </Layout>
         </RequireAuth>

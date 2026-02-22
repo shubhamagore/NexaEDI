@@ -114,7 +114,7 @@ export default function AuditTrail() {
             icon={<ClipboardList className="w-7 h-7" />}
             title="No records found"
             description="Ingest an EDI file to see audit records appear here"
-            action={<button onClick={() => navigate('/ingest')} className="btn-primary text-xs">Ingest EDI File</button>}
+            action={<button onClick={() => navigate('/dashboard/ingest')} className="btn-primary text-xs">Ingest EDI File</button>}
           />
         ) : (
           <div className="overflow-x-auto">

@@ -98,7 +98,7 @@ export default function Dashboard() {
             <div className="py-12 flex flex-col items-center gap-2">
               <FileInput className="w-8 h-8 text-slate-300" />
               <p className="text-sm text-slate-400">No activity yet</p>
-              <button onClick={() => navigate('/ingest')} className="btn-primary text-xs mt-1">
+              <button onClick={() => navigate('/dashboard/ingest')} className="btn-primary text-xs mt-1">
                 Ingest your first EDI file
               </button>
             </div>
@@ -142,7 +142,7 @@ export default function Dashboard() {
           {recentLogs.length > 0 && (
             <div className="px-5 py-3 border-t border-slate-100 flex items-center justify-between">
               <p className="text-xs text-slate-400">Updated {lastRefresh.toLocaleTimeString()}</p>
-              <button onClick={() => navigate('/audit')} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1">
+              <button onClick={() => navigate('/dashboard/audit')} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1">
                 View all <ArrowRight className="w-3 h-3" />
               </button>
             </div>

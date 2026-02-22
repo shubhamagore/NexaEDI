@@ -5,14 +5,14 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { to: '/',         label: 'Dashboard',    icon: LayoutDashboard },
-  { to: '/ingest',   label: 'Ingest EDI',   icon: Upload },
-  { to: '/audit',    label: 'Audit Trail',  icon: ClipboardList },
-  { to: '/mappings', label: 'Mappings',     icon: Map },
+  { to: '/dashboard',         label: 'Dashboard',    icon: LayoutDashboard },
+  { to: '/dashboard/ingest',   label: 'Ingest EDI',   icon: Upload },
+  { to: '/dashboard/audit',    label: 'Audit Trail',  icon: ClipboardList },
+  { to: '/dashboard/mappings', label: 'Mappings',     icon: Map },
 ];
 
 const devItems = [
-  { to: '/dev', label: 'Dev Tools', icon: Wrench },
+  { to: '/dashboard/dev', label: 'Dev Tools', icon: Wrench },
 ];
 
 interface Props {
@@ -23,7 +23,7 @@ export default function Sidebar({ apiOnline }: Props) {
   const location = useLocation();
 
   const NavItem = ({ to, label, icon: Icon }: { to: string; label: string; icon: typeof LayoutDashboard }) => {
-    const active = to === '/' ? location.pathname === '/' : location.pathname.startsWith(to);
+    const active = to === '/dashboard' ? location.pathname === '/dashboard' : location.pathname.startsWith(to);
     return (
       <NavLink to={to} className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group ${active ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-900/30' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
         <Icon className="w-4 h-4 shrink-0" />
