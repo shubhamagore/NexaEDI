@@ -2,6 +2,7 @@ package com.nexaedi.infrastructure.config.local;
 
 import com.nexaedi.infrastructure.config.S3Properties;
 import com.nexaedi.infrastructure.s3.S3StorageService;
+import com.nexaedi.infrastructure.storage.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
