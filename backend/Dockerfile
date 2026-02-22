@@ -2,8 +2,12 @@ FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-COPY . .
+# Copy only backend folder
+COPY backend ./backend
 
+WORKDIR /app/backend
+
+RUN chmod +x mvnw
 RUN ./mvnw clean package -DskipTests
 
 EXPOSE 8080
