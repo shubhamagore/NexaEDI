@@ -75,13 +75,15 @@ export default function Dashboard() {
             <ArrowRight className="w-3.5 h-3.5 text-slate-300 shrink-0 mb-5" />
             <PipelineStep label="Done" count={summary?.acknowledged ?? 0} active={(summary?.acknowledged ?? 0) > 0} />
           </div>
-          {summary?.failed > 0 && (
-            <div className="mt-4 p-2.5 bg-red-50 border border-red-100 rounded-lg flex items-center gap-2">
-              <XCircle className="w-4 h-4 text-red-500 shrink-0" />
-              <p className="text-xs text-red-700 font-medium">{summary.failed} file(s) in DLQ</p>
-            </div>
-          )}
-        </div>
+            {(summary?.failed ?? 0) > 0 && (
+              <div className="mt-4 p-2.5 bg-red-50 border border-red-100 rounded-lg flex items-center gap-2">
+                <XCircle className="w-4 h-4 text-red-500 shrink-0" />
+                <p className="text-xs text-red-700 font-medium">
+                  {summary?.failed ?? 0} file(s) in DLQ
+                </p>
+              </div>
+            )}
+          </div>
 
         {/* Recent Activity */}
         <div className="card col-span-2 overflow-hidden">
