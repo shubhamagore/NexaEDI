@@ -30,4 +30,6 @@ public class S3Properties {
      * Prefix/folder for successfully processed EDI files (archival).
      */
     private String processedPrefix = "edi/processed/";
+
+    private String outboundPrefix;
 }

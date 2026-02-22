@@ -1,5 +1,6 @@
-package com.nexaedi.infrastructure.storage;
+package com.nexaedi.infrastructure.s3;
 
+import com.nexaedi.infrastructure.storage.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
