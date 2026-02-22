@@ -12,7 +12,7 @@ import com.nexaedi.core.parser.UniversalX12Parser;
 import com.nexaedi.infrastructure.dlq.DeadLetterQueueService;
 import com.nexaedi.infrastructure.shopify.ShopifyOutboundAdapter;
 import com.nexaedi.infrastructure.shopify.ShopifyTransmissionException;
-import com.nexaedi.infrastructure.s3.StorageService ;
+import com.nexaedi.infrastructure.storage.StorageService;
 import com.nexaedi.portal.model.OrderSyncStatus;
 import com.nexaedi.portal.model.PlatformType;
 import com.nexaedi.portal.model.SellerOrder;
