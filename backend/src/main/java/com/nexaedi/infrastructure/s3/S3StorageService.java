@@ -22,8 +22,12 @@ import java.time.format.DateTimeFormatter;
  */
 @Slf4j
 @Service
+@ConditionalOnProperty(
+        name = "nexaedi.s3.enabled",
+        havingValue = "true"
+)
 @RequiredArgsConstructor
-public class S3StorageService {
+public class S3StorageService implements StorageService {
 
     private static final DateTimeFormatter DATE_PREFIX_FORMAT =
             DateTimeFormatter.ofPattern("yyyy/MM/dd").withZone(ZoneOffset.UTC);

@@ -1,0 +1,35 @@
+package com.nexaedi.infrastructure.storage;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+@ConditionalOnProperty(
+        name = "nexaedi.s3.enabled",
+        havingValue = "false",
+        matchIfMissing = true
+)
+public class DatabaseStorageService implements StorageService {
+
+    @Override
+    public String storeInbound(String correlationId,
+                               String retailerId,
+                               String content,
+                               String fileName) {
+
+        // For now, just return logical key
+        return "db://" + correlationId;
+    }
+
+    @Override
+    public void archiveProcessed(String key) {
+        // no-op for now
+    }
+
+    @Override
+    public String retrieveContent(String key) {
+        return null;
+    }
+}

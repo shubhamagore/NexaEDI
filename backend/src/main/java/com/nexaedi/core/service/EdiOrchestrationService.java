@@ -12,7 +12,7 @@ import com.nexaedi.core.parser.UniversalX12Parser;
 import com.nexaedi.infrastructure.dlq.DeadLetterQueueService;
 import com.nexaedi.infrastructure.shopify.ShopifyOutboundAdapter;
 import com.nexaedi.infrastructure.shopify.ShopifyTransmissionException;
-import com.nexaedi.infrastructure.s3.S3StorageService;
+import com.nexaedi.infrastructure.s3.StorageService ;
 import com.nexaedi.portal.model.OrderSyncStatus;
 import com.nexaedi.portal.model.PlatformType;
 import com.nexaedi.portal.model.SellerOrder;
@@ -56,7 +56,7 @@ public class EdiOrchestrationService {
     private final AuditLoggingService auditLoggingService;
     private final DeadLetterQueueService dlqService;
     private final ShopifyOutboundAdapter shopifyAdapter;
-    private final S3StorageService s3StorageService;
+    private final StorageService inboundStorageService;
     private final SellerRepository sellerRepository;
     private final SellerOrderRepository sellerOrderRepository;
 
@@ -87,7 +87,7 @@ public class EdiOrchestrationService {
         long stageStart = System.currentTimeMillis();
 
         // Stage 1: RECEIVED — persist to S3 and audit
-        String s3Key = s3StorageService.storeInbound(correlationId, retailerId, rawContent);
+        String s3Key = storageService.storeInbound(correlationId, retailerId, rawContent);
         auditLoggingService.record(correlationId, retailerId, null, null,
                 EdiProcessingStatus.RECEIVED, s3Key,
                 "File received and stored in S3: " + s3Key,
@@ -160,7 +160,7 @@ public class EdiOrchestrationService {
                 System.currentTimeMillis() - stageStart);
 
         // Stage 5: ACKNOWLEDGED + create SellerOrder for portal visibility
-        s3StorageService.archiveProcessed(s3Key, correlationId);
+        storageService.archiveProcessed(s3Key, correlationId);
         auditLoggingService.record(correlationId, retailerId, transactionSetCode,
                 canonicalOrder.getPoNumber(), EdiProcessingStatus.ACKNOWLEDGED, s3Key,
                 "Pipeline complete. Shopify Draft Order: " + shopifyOrderId, 0L);
