@@ -21,8 +21,7 @@ import java.util.UUID;
 public class DeadLetterEntry {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id", updatable = false, nullable = false, length = 36)
     private UUID id;
 
     @Column(name = "retailer_id", nullable = false, length = 50)
