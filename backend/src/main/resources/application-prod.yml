@@ -1,7 +1,9 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # PROD profile — deployment (e.g. Render).
-# Use: --spring.profiles.active=prod
-# Set: SPRING_DATASOURCE_URL, SPRING_DATASOURCE_USERNAME, SPRING_DATASOURCE_PASSWORD
+# Set on Render: SPRING_PROFILES_ACTIVE=prod
+# Set: SPRING_DATASOURCE_URL (JDBC, e.g. jdbc:postgresql://host:5432/dbname)
+#      SPRING_DATASOURCE_USERNAME, SPRING_DATASOURCE_PASSWORD
+# For Render Postgres SSL set: SPRING_DATASOURCE_URL_OPTIONS=?sslmode=require
 # ─────────────────────────────────────────────────────────────────────────────
 
 server:
@@ -9,7 +11,7 @@ server:
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
+    url: ${SPRING_DATASOURCE_URL}${SPRING_DATASOURCE_URL_OPTIONS:}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
