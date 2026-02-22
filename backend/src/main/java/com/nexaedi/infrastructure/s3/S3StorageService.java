@@ -77,6 +77,20 @@ public class S3StorageService implements StorageService {
         return archiveKey;
     }
 
+     @Override
+    public String storeOutbound(String correlationId, String retailerId, String content) {
+        return objectKey;
+    }
+     @Override
+    public String retrieveContent(String key) {
+        return content;
+    }
+
+    @Override
+    public String archiveProcessed(String key, String correlationId) {
+        return archivedKey;
+    }
+
     /**
      * Retrieves the raw EDI content of a file by its S3 key (for replay/reprocessing).
      */

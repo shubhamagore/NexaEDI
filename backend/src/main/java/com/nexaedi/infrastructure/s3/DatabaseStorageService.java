@@ -32,4 +32,18 @@ public class DatabaseStorageService implements StorageService {
     public String retrieveContent(String key) {
         return null;
     }
+
+    @Override
+    public String storeOutbound(String correlationId, String retailerId, String content) {
+        return "db-outbound-" + correlationId;
+    }
+     @Override
+    public String retrieveContent(String key) {
+        return "";
+    }
+
+    @Override
+    public String archiveProcessed(String key, String correlationId) {
+        return key;
+    }
 }

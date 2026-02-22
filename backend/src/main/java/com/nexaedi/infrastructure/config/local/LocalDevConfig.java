@@ -62,48 +62,31 @@ public class LocalDevConfig {
      * Saves EDI files to ./local-storage/inbound/{date}/{retailer}/{correlationId}.edi
      */
     @Bean
-    @Primary
-    public S3StorageService s3StorageService(S3Properties s3Properties) {
-        return new S3StorageService(s3Client(), s3Properties) {
+@Primary
+public StorageService storageService() {
+    return new StorageService() {
 
-            @Override
-            public String storeInbound(String correlationId, String retailerId, String ediContent) {
-                String datePrefix = DATE_PREFIX.format(Instant.now());
-                String relativePath = String.format("inbound/%s/%s/%s.edi",
-                        datePrefix, retailerId.toLowerCase(), correlationId);
-                Path filePath = Path.of(localStorageDir, relativePath);
-                writeLocalFile(filePath, ediContent);
-                log.info("[LOCAL-S3] Stored inbound EDI: {}", filePath.toAbsolutePath());
-                return "local://" + relativePath;
-            }
+        @Override
+        public String storeInbound(String correlationId, String retailerId, String ediContent) {
+            log.info("[LOCAL] Stored inbound for {}", correlationId);
+            return "local-inbound-" + correlationId;
+        }
 
-            @Override
-            public String archiveProcessed(String inboundS3Key, String correlationId) {
-                String archivePath = inboundS3Key.replace("inbound/", "processed/");
-                log.info("[LOCAL-S3] Archived processed file: {}", archivePath);
-                return archivePath;
-            }
+        @Override
+        public String storeOutbound(String correlationId, String retailerId, String content) {
+            return "local-outbound-" + correlationId;
+        }
 
-            @Override
-            public String retrieveContent(String s3Key) {
-                Path filePath = Path.of(localStorageDir, s3Key.replace("local://", ""));
-                try {
-                    return Files.readString(filePath, StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    log.warn("[LOCAL-S3] Could not read file '{}': {}", filePath, e.getMessage());
-                    return "";
-                }
-            }
+        @Override
+        public String retrieveContent(String key) {
+            return "";
+        }
 
-            private void writeLocalFile(Path filePath, String content) {
-                try {
-                    Files.createDirectories(filePath.getParent());
-                    Files.writeString(filePath, content, StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    log.error("[LOCAL-S3] Failed to write local file '{}': {}", filePath, e.getMessage());
-                }
-            }
-        };
+        @Override
+        public String archiveProcessed(String key, String correlationId) {
+            return key;
+        }
+    };
+        }
+    
     }
-
-}

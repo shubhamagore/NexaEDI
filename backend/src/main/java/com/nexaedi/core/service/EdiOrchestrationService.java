@@ -56,7 +56,7 @@ public class EdiOrchestrationService {
     private final AuditLoggingService auditLoggingService;
     private final DeadLetterQueueService dlqService;
     private final ShopifyOutboundAdapter shopifyAdapter;
-    private final StorageService inboundStorageService;
+    private final StorageService storageService;
     private final SellerRepository sellerRepository;
     private final SellerOrderRepository sellerOrderRepository;
 
