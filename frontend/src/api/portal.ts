@@ -1,6 +1,9 @@
 import axios from 'axios';
+import { apiBaseUrl } from './config';
 
-const http = axios.create({ baseURL: '/api/v1/portal' });
+const http = axios.create({
+  baseURL: apiBaseUrl ? `${apiBaseUrl}/api/v1/portal` : '/api/v1/portal',
+});
 
 // Attach JWT from localStorage on every request
 http.interceptors.request.use(config => {

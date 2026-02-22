@@ -41,7 +41,14 @@ Use it as follows:
 - `JWT_SECRET` — strong secret for auth tokens.
 - `AWS_REGION`, `S3_BUCKET_NAME`, etc. — if you use S3 for EDI storage.
 
-## 5. Linking Postgres to the Web Service
+## 5. CORS (frontend on Vercel)
+
+To allow your Vercel frontend to call this backend, set:
+
+- **Key:** `CORS_ALLOWED_ORIGINS`
+- **Value:** Your Vercel app URL, e.g. `https://nexaedi.vercel.app` (comma-separated if you have multiple)
+
+## 6. Linking Postgres to the Web Service
 
 In the Render Dashboard, open your PostgreSQL instance → **Connect** → choose your Web Service. Render can inject a single `DATABASE_URL`; the app expects the separate `SPRING_DATASOURCE_*` variables above, so set them manually (or map `DATABASE_URL` into JDBC URL and username/password yourself).
 

@@ -3,8 +3,12 @@ import type {
   AuditLog, ProcessingResponse, MappingProfile,
   StatusSummary, DevStats, HealthStatus,
 } from '../types';
+import { apiBaseUrl } from './config';
 
-const http = axios.create({ baseURL: '/', headers: { 'Content-Type': 'application/json' } });
+const http = axios.create({
+  baseURL: apiBaseUrl || '/',
+  headers: { 'Content-Type': 'application/json' },
+});
 
 http.interceptors.request.use(config => {
   try {

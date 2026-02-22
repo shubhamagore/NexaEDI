@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { apiBaseUrl } from './config';
 
-const http = axios.create({ baseURL: '/' });
+const http = axios.create({ baseURL: apiBaseUrl || '/' });
 
 export interface AuthResponse {
   token: string;
